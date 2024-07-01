@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Retro Product Carousels</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Courier New", monospace;
+        margin: 0;
+        padding: 20px;
+        background-color: #000;
+        color: #0f0;
+        background-image: linear-gradient(to right, #0f0 1px, transparent 1px),
+          linear-gradient(to bottom, #0f0 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+      .carousel-container {
+        position: relative;
+        margin-bottom: 40px;
+        border: 4px solid #0f0;
+        padding: 20px;
+      }
+      .carousel {
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        scroll-behavior: smooth;
+        padding: 20px 0;
+      }
+      .carousel::-webkit-scrollbar {
+        display: none;
+      }
+      .product-card {
+        display: inline-block;
+        width: 250px;
+        margin-right: 20px;
+        vertical-align: top;
+        background-color: #000;
+        border: 2px solid #0f0;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 5px 5px 0px #0f0;
+        transition: transform 0.3s ease;
+      }
+      .product-card:hover {
+        transform: translateY(-5px);
+      }
+      .product-card img {
+        max-width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border: 2px solid #0f0;
+        margin-bottom: 15px;
+        image-rendering: pixelated;
+      }
+      .product-name {
+        font-weight: bold;
+        margin: 10px 0;
+        font-size: 1.1em;
+        color: #0ff;
+        text-transform: uppercase;
+      }
+      .product-price {
+        color: #f0f;
+        font-size: 1.3em;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      .product-stock {
+        color: #ff0;
+        font-size: 0.9em;
+      }
+      .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #000;
+        color: #0f0;
+        border: 2px solid #0f0;
+        width: 40px;
+        height: 40px;
+        font-size: 1.5em;
+        cursor: pointer;
+        font-family: "Press Start 2P", cursive;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      .carousel-btn:hover {
+        background-color: #0f0;
+        color: #000;
+      }
+      .carousel-btn.prev {
+        left: 10px;
+      }
+      .carousel-btn.next {
+        right: 10px;
+      }
+      h2 {
+        text-align: center;
+        color: #f0f;
+        margin-bottom: 20px;
+        font-family: "Press Start 2P", cursive;
+        font-size: 1.5em;
+        text-shadow: 3px 3px #0ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script>
+      const products = [
+        {
+          name: "Walkman",
+          price: 49.99,
+          stock: 10,
+          image: "https://picsum.photos/seed/picsugfm/500/300",
+        },
+        {
+          name: "VHS Player",
+          price: 79.99,
+          stock: 15,
+          image: "https://picsum.photos/seed/picsum4/500/300",
+        },
+        {
+          name: "Polaroid Camera",
+          price: 69.99,
+          stock: 20,
+          image: "https://picsum.photos/seed/picsu3m/500/300",
+        },
+        {
+          name: "Arcade Machine",
+          price: 299.99,
+          stock: 8,
+          image: "https://picsum.photos/seed/pics2um/500/300",
+        },
+        {
+          name: "Boombox",
+          price: 89.99,
+          stock: 12,
+          image: "https://picsum.photos/seed/pics5um/500/300",
+        },
+        {
+          name: "Retro Console",
+          price: 129.99,
+          stock: 7,
+          image: "https://picsum.photos/seed/pichsum/500/300",
+        },
+        {
+          name: "Cassette Tapes",
+          price: 9.99,
+          stock: 50,
+          image: "https://picsum.photos/seed/picsudm/500/300",
+        },
+        {
+          name: "Vinyl Record",
+          price: 24.99,
+          stock: 30,
+          image: "https://picsum.photos/seed/picsvum/500/300",
+        },
+        {
+          name: "Game Boy",
+          price: 59.99,
+          stock: 5,
+          image: "https://picsum.photos/seed/psicsum/500/300",
+        },
+      ];
+
+      function createProductCard(product) {
+        return `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-price">$${product.price.toFixed(
+                      2
+                    )}</div>
+                    <div class="product-stock">In stock: ${product.stock}</div>
+                </div>
+            `;
+      }
+
+      function createCarousel(products, index) {
+        const carouselContainer = document.createElement("div");
+        carouselContainer.className = "carousel-container";
+        carouselContainer.innerHTML = `
+                <h2>Retro Collection ${index + 1}</h2>
+                <div class="carousel">
+                    ${products.map(createProductCard).join("")}
+                </div>
+                <button class="carousel-btn prev">&lt;</button>
+                <button class="carousel-btn next">&gt;</button>
+            `;
+        return carouselContainer;
+      }
+
+      const app = document.getElementById("app");
+      for (let i = 0; i < 5; i++) {
+        const carousel = createCarousel(products, i);
+        app.appendChild(carousel);
+
+        const carouselElement = carousel.querySelector(".carousel");
+        const prevBtn = carousel.querySelector(".prev");
+        const nextBtn = carousel.querySelector(".next");
+
+        prevBtn.addEventListener("click", () => {
+          carouselElement.scrollBy({ left: -280, behavior: "smooth" });
+        });
+
+        nextBtn.addEventListener("click", () => {
+          carouselElement.scrollBy({ left: 280, behavior: "smooth" });
+        });
+      }
+    </script>
+  </body>
+</html>
